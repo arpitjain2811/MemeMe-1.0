@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     
     @IBOutlet weak var uiImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -25,29 +25,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
         topTextField.delegate = self.textFieldDelegate
         bottomTextField.delegate = self.textFieldDelegate
         
         let memeTextAttributes:[String:Any] = [NSStrokeColorAttributeName:UIColor.black,
                                                NSForegroundColorAttributeName:UIColor.white,
-                                               NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 60)!,
+                                               NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
                                                NSStrokeWidthAttributeName:-1.0]
-        
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
-        
         topTextField.textAlignment = NSTextAlignment.center
         topTextField.adjustsFontSizeToFitWidth = true
         topTextField.allowsEditingTextAttributes = true
         bottomTextField.textAlignment = NSTextAlignment.center
         bottomTextField.adjustsFontSizeToFitWidth = true
         bottomTextField.allowsEditingTextAttributes = true
-        
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
-        
-        
         shareButton.isEnabled = false
     }
     
@@ -134,7 +128,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func keyboardWillShow(_ notification:Notification) {
         
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomTextField.isFocused == true {
+            view.frame.origin.y = -getKeyboardHeight(notification)
+        }
     }
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
@@ -146,7 +142,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     /**
      Gets the EditedImage and sets the image in uiImageView. Also activated the share button
-    */
+     */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             uiImageView.image = image
@@ -157,7 +153,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     /**
      Presents the UIImagePickerController with the sourceType
-    */
+     */
     func showImagePicker(sourceType:UIImagePickerControllerSourceType) {
         
         let imagePicker = UIImagePickerController()

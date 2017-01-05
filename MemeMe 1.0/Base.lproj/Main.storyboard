@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Meme EditorVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe_1_0" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MemeEditorVC" customModule="MemeMe_1_0" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,17 +23,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QA0-DI-xIl">
-                                <rect key="frame" x="0.0" y="40" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="557"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="2T6-zr-EkK">
-                                <rect key="frame" x="0.0" y="621" width="375" height="46"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2T6-zr-EkK">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <barButtonItem systemItem="camera" id="gcV-pn-1OH">
                                         <connections>
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="nsn-L7-NvE"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="283" style="plain" systemItem="fixedSpace" id="gTn-Fj-Kx1"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="vyM-Zn-HMI"/>
                                     <barButtonItem systemItem="organize" id="7hV-ZC-vl0">
                                         <connections>
                                             <action selector="pickAnImageFromAlbum:" destination="BYZ-38-t0r" id="fNg-C8-EGz"/>
@@ -41,9 +41,8 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLD-ZP-4jr">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLD-ZP-4jr">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="MemeMe" id="aWE-hy-BXF">
                                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="WPh-kN-QDh">
@@ -55,39 +54,42 @@
                                 </items>
                             </navigationBar>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IVH-Kp-mUe">
-                                <rect key="frame" x="62" y="186" width="250" height="100"/>
+                                <rect key="frame" x="87" y="79" width="200" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="6bb-ft-WDy"/>
+                                    <constraint firstAttribute="height" constant="70" id="6bb-ft-WDy"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" verticalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zmR-IP-n1W">
-                                <rect key="frame" x="62" y="454" width="250" height="100"/>
+                                <rect key="frame" x="87" y="476" width="200" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="51y-x7-CFm"/>
+                                    <constraint firstAttribute="height" constant="70" id="51y-x7-CFm"/>
                                 </constraints>
                                 <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="2T6-zr-EkK" firstAttribute="trailing" secondItem="QA0-DI-xIl" secondAttribute="trailing" id="20O-Rt-INh"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="QA0-DI-xIl" secondAttribute="bottom" id="63g-kB-lDd"/>
-                            <constraint firstItem="2T6-zr-EkK" firstAttribute="leading" secondItem="QA0-DI-xIl" secondAttribute="leading" id="COj-WA-KPF"/>
-                            <constraint firstItem="QA0-DI-xIl" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="EHt-yg-8O7"/>
-                            <constraint firstItem="zmR-IP-n1W" firstAttribute="top" secondItem="IVH-Kp-mUe" secondAttribute="bottom" constant="168" id="ESj-EK-sQJ"/>
-                            <constraint firstItem="2T6-zr-EkK" firstAttribute="top" secondItem="zmR-IP-n1W" secondAttribute="bottom" constant="67" id="HER-We-Kv7"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="2T6-zr-EkK" secondAttribute="bottom" id="O5Y-e4-tP3"/>
-                            <constraint firstItem="IVH-Kp-mUe" firstAttribute="centerX" secondItem="QA0-DI-xIl" secondAttribute="centerX" id="OkI-FB-6jh"/>
-                            <constraint firstItem="IVH-Kp-mUe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="166" id="UWE-dI-WTI"/>
-                            <constraint firstAttribute="trailing" secondItem="QA0-DI-xIl" secondAttribute="trailing" id="aTL-KG-U9F"/>
-                            <constraint firstItem="zmR-IP-n1W" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="46" id="eiH-5U-sR1"/>
-                            <constraint firstItem="zmR-IP-n1W" firstAttribute="centerX" secondItem="QA0-DI-xIl" secondAttribute="centerX" id="ill-mr-T41"/>
-                            <constraint firstItem="zmR-IP-n1W" firstAttribute="leading" secondItem="IVH-Kp-mUe" secondAttribute="leading" id="nMA-70-b5p"/>
-                            <constraint firstItem="QA0-DI-xIl" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="wNq-c3-rhe"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="6cQ-Bq-3z8"/>
+                            <constraint firstItem="2T6-zr-EkK" firstAttribute="top" secondItem="zmR-IP-n1W" secondAttribute="bottom" constant="77" id="9Uk-Kn-xG7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="QA0-DI-xIl" secondAttribute="trailing" constant="-16" id="OBz-ZF-rUg"/>
+                            <constraint firstItem="QA0-DI-xIl" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="PPL-7E-n2f"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="centerX" secondItem="IVH-Kp-mUe" secondAttribute="centerX" id="QGK-6O-CMO"/>
+                            <constraint firstItem="2T6-zr-EkK" firstAttribute="top" secondItem="QA0-DI-xIl" secondAttribute="bottom" constant="2" id="SnC-ZC-R8J"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="trailing" secondItem="QA0-DI-xIl" secondAttribute="trailing" id="TsG-T8-meN"/>
+                            <constraint firstAttribute="bottom" secondItem="zmR-IP-n1W" secondAttribute="bottom" constant="121" id="Wnv-FU-ez2"/>
+                            <constraint firstItem="zmR-IP-n1W" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="71" id="a3C-8X-EWS"/>
+                            <constraint firstItem="IVH-Kp-mUe" firstAttribute="top" secondItem="iLD-ZP-4jr" secondAttribute="bottom" constant="15" id="aXs-Vw-sra"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="leading" secondItem="2T6-zr-EkK" secondAttribute="leading" id="bhT-hW-j83"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="trailing" secondItem="2T6-zr-EkK" secondAttribute="trailing" id="j79-Mg-0zN"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="centerX" secondItem="zmR-IP-n1W" secondAttribute="centerX" id="kou-xG-GvA"/>
+                            <constraint firstItem="iLD-ZP-4jr" firstAttribute="leading" secondItem="QA0-DI-xIl" secondAttribute="leading" id="lwr-B0-wNe"/>
+                            <constraint firstItem="zmR-IP-n1W" firstAttribute="leading" secondItem="IVH-Kp-mUe" secondAttribute="leading" id="nEm-xu-EBg"/>
+                            <constraint firstItem="QA0-DI-xIl" firstAttribute="top" secondItem="iLD-ZP-4jr" secondAttribute="bottom" id="qqO-UB-7Nk"/>
                         </constraints>
                     </view>
                     <connections>
