@@ -8,18 +8,163 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+    
+    @IBOutlet weak var uiImageView: UIImageView!
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var topTextField: UITextField!
+    @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var navigationBar: UINavigationBar!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+    
+    let textFieldDelegate = TextFieldDelegate()
+    var meme:Meme!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        
+        topTextField.delegate = self.textFieldDelegate
+        bottomTextField.delegate = self.textFieldDelegate
+        
+        let memeTextAttributes:[String:Any] = [NSStrokeColorAttributeName:UIColor.black,
+                                               NSForegroundColorAttributeName:UIColor.white,
+                                               NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 60)!,
+                                               NSStrokeWidthAttributeName:-1.0]
+        
+        topTextField.defaultTextAttributes = memeTextAttributes
+        bottomTextField.defaultTextAttributes = memeTextAttributes
+        
+        topTextField.textAlignment = NSTextAlignment.center
+        topTextField.adjustsFontSizeToFitWidth = true
+        topTextField.allowsEditingTextAttributes = true
+        bottomTextField.textAlignment = NSTextAlignment.center
+        bottomTextField.adjustsFontSizeToFitWidth = true
+        bottomTextField.allowsEditingTextAttributes = true
+        
+        topTextField.text = "TOP"
+        bottomTextField.text = "BOTTOM"
+        
+        
+        shareButton.isEnabled = false
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
     }
-
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    @IBAction func pickAnImageFromCamera(_ sender: Any) {
+        showImagePicker(sourceType: .camera)
+    }
+    
+    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+        
+        showImagePicker(sourceType: .photoLibrary)
+        
+    }
+    @IBAction func shareMeme(_ sender: Any) {
+        
+        let memedImage = generateMemedImage()
+        let activityViewController = UIActivityViewController(activityItems: ["Check out this meme", memedImage], applicationActivities: nil)
+        
+        activityViewController.completionWithItemsHandler = {
+            type, ok, items, err in
+            print("Saving Meme model object")
+            self.meme = Meme(topText: self.topTextField.text!, bottomText: self.bottomTextField.text!, originalImage:
+                self.uiImageView.image!, memedImage: memedImage)
+        }
+        
+        present(activityViewController, animated: true, completion: nil)
+    }
+    
+    /**
+     Generates Memed Image. Hides the toolbar and navigation bar, Renders the view to image, Display back the toolbar and navigation bar, returns the MemedImage
+     
+     */
+    func generateMemedImage() -> UIImage {
+        
+        toolbar.isHidden = true
+        navigationBar.isHidden = true
+        
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        toolbar.isHidden = false
+        navigationBar.isHidden = false
+        
+        return memedImage
+    }
+    
+    /**
+     Subscribes to UIKeyboardWillShow and UIKeyboardWillHide
+     */
+    func subscribeToKeyboardNotifications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    /**
+     Unsubscribes from UIKeyboardWillShow and UIKeyboardWillHide
+     */
+    func unsubscribeFromKeyboardNotifications() {
+        
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWillHide(_ notification:Notification) {
+        
+        view.frame.origin.y = 0
+    }
+    
+    
+    func keyboardWillShow(_ notification:Notification) {
+        
+        view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+    
+    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    /**
+     Gets the EditedImage and sets the image in uiImageView. Also activated the share button
+    */
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            uiImageView.image = image
+            dismiss(animated: true, completion: nil)
+            shareButton.isEnabled = true
+        }
+    }
+    
+    /**
+     Presents the UIImagePickerController with the sourceType
+    */
+    func showImagePicker(sourceType:UIImagePickerControllerSourceType) {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
 }
 
