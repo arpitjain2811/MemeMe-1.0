@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorVC.swift
 //  MemeMe 1.0
 //
 //  Created by Arpit Jain on 1/3/17.
@@ -25,21 +25,9 @@ class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         super.viewDidLoad()
         
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        topTextField.delegate = self.textFieldDelegate
-        bottomTextField.delegate = self.textFieldDelegate
+        configureTextFields(textField: topTextField)
+        configureTextFields(textField: bottomTextField)
         
-        let memeTextAttributes:[String:Any] = [NSStrokeColorAttributeName:UIColor.black,
-                                               NSForegroundColorAttributeName:UIColor.white,
-                                               NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-                                               NSStrokeWidthAttributeName:-1.0]
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = NSTextAlignment.center
-        topTextField.adjustsFontSizeToFitWidth = true
-        topTextField.allowsEditingTextAttributes = true
-        bottomTextField.textAlignment = NSTextAlignment.center
-        bottomTextField.adjustsFontSizeToFitWidth = true
-        bottomTextField.allowsEditingTextAttributes = true
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
         shareButton.isEnabled = false
@@ -74,11 +62,23 @@ class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         activityViewController.completionWithItemsHandler = {
             type, ok, items, err in
             print("Saving Meme model object")
-            self.meme = Meme(topText: self.topTextField.text!, bottomText: self.bottomTextField.text!, originalImage:
-                self.uiImageView.image!, memedImage: memedImage)
+            self.saveMeme(memedImage)
+            self.dismiss(animated: true, completion: nil) // will be useful in v2.0
         }
         
         present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func configureTextFields(textField: UITextField) {
+        textField.delegate = self.textFieldDelegate
+        let memeTextAttributes:[String:Any] = [NSStrokeColorAttributeName:UIColor.black,
+                                               NSForegroundColorAttributeName:UIColor.white,
+                                               NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+                                               NSStrokeWidthAttributeName:-1.0]
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = NSTextAlignment.center
+        textField.adjustsFontSizeToFitWidth = true
+        textField.allowsEditingTextAttributes = true
     }
     
     /**
@@ -128,7 +128,7 @@ class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     func keyboardWillShow(_ notification:Notification) {
         
-        if bottomTextField.isFocused == true {
+        if bottomTextField.isFirstResponder {
             view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
@@ -161,6 +161,13 @@ class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         imagePicker.sourceType = sourceType
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func saveMeme(_ memedImage: UIImage) {
+        let meme = Meme(topText: topTextField.text!,
+                        bottomText: bottomTextField.text!,
+                        originalImage: uiImageView.image!,
+                        memedImage: memedImage)
     }
 }
 
