@@ -61,9 +61,11 @@ class MemeEditorVC: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         activityViewController.completionWithItemsHandler = {
             type, ok, items, err in
-            print("Saving Meme model object")
-            self.saveMeme(memedImage)
-            self.dismiss(animated: true, completion: nil) // will be useful in v2.0
+            if ok {
+                print("Saving Meme model object")
+                self.saveMeme(memedImage)
+                self.dismiss(animated: true, completion: nil) // will be useful in v2.0
+            }
         }
         
         present(activityViewController, animated: true, completion: nil)
